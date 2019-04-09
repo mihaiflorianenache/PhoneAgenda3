@@ -102,4 +102,10 @@ public class AgendaRepository {
             return searchedContact;
         }
     }
+
+    public void updateContact(String field) throws SQLException, IOException, ClassNotFoundException{
+        try(Connection connection=DatabaseConfiguration.getConnection()){
+            if(field.equals("phoneNumber")) String updateContact="UPDATE agenda SET phoneNumber="+field+"WHERE ";
+        }
+    }
 }

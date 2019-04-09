@@ -5,6 +5,7 @@ import org.fasttrackit.Service.AgendaService;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.Stack;
@@ -18,6 +19,8 @@ public class Contact {
     private String lastNameAfterYouChoose;
     private String firstName="firstName";
     private String lastName="lastName";
+    private String phoneNumber="phoneNumber";
+    private HashMap<String,String> pairFirstNameLastName=new HashMap<>();
 
     private void checkFirstNameOrLastName(String firstNameOrLastName, String fieldName) throws MyException {
 
@@ -198,7 +201,7 @@ public class Contact {
         }
     }
 
-    private String updateContact(){
+    private String updateContact()throws SQLException, IOException, ClassNotFoundException{
         try {
             String option=optionUpdateContact();
             if(option.equals("y"))
@@ -227,7 +230,7 @@ public class Contact {
                     return null;
     }
 
-    private String chooseFieldForUpdate(){
+    private String chooseFieldForUpdate()throws SQLException, IOException, ClassNotFoundException{
         try {
             System.out.println("Choice what you want to change between 1-first name, 2-last name and 3-phone number");
             Scanner scanner = new Scanner(System.in);
@@ -249,7 +252,8 @@ public class Contact {
                     else
                         if(fieldUpdate==3){
                             //change the phone number
-
+                            selectFirstNameLastNameForUpdateingPhoneNumber();
+                            agendaService.updateContact(phoneNumber);
                         }
 
         }catch(InputMismatchException exception){
@@ -257,6 +261,12 @@ public class Contact {
             return chooseFieldForUpdate();
         }
         return null;
+    }
+
+    private void selectFirstNameLastNameForUpdateingPhoneNumber()throws SQLException, IOException, ClassNotFoundException{
+        for (Agenda phoneList : agendaService.getContact()) {
+            pairFirstNameLastName.put(phoneList.getFirstName(),phoneList.getLastName());
+        }
     }
 
     public void actionsAgenda() throws SQLException, IOException, ClassNotFoundException {

@@ -34,4 +34,8 @@ public class AgendaService {
     public List<Agenda> searchContactAfterFirstNameOrLastName(String firstNameOrLastName,String searchAfterFirstNameOrLastName) throws SQLException, IOException, ClassNotFoundException{
         return agendaRepository.searchContact(firstNameOrLastName,searchAfterFirstNameOrLastName);
     }
+
+    public void updateContact(String field)throws SQLException, IOException, ClassNotFoundException{
+        agendaRepository.updateContact(field);
+    }
 }
