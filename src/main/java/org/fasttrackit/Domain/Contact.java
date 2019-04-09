@@ -97,18 +97,9 @@ public class Contact {
         agenda.setLastName(lastName.trim());
     }
 
-    private void writePhoneNumber() {
-        /*DACA numarul exista in db nu se mai poate adauga*/
-
-        getPhoneNumber();
-
-        /**********/
+    private void writePhoneNumber() throws SQLException, IOException, ClassNotFoundException{
         String phoneNumber = settingPhoneNumber();
         agenda.setPhoneNumber(phoneNumber.trim());
-    }
-
-    private void getPhoneNumber(){
-        
     }
 
     private void createContact() throws SQLException, IOException, ClassNotFoundException {
@@ -207,9 +198,71 @@ public class Contact {
         }
     }
 
+    private String updateContact(){
+        try {
+            String option=optionUpdateContact();
+            if(option.equals("y"))
+                chooseFieldForUpdate();
+        }catch(MyException exception){
+            System.out.println(exception);
+            return updateContact();
+        }
+        return null;
+    }
+
+    private String optionUpdateContact()throws MyException{
+        System.out.println("Do you want to update a contact ? Y/N");
+        Scanner scanner = new Scanner(System.in);
+        String answer = scanner.nextLine();
+        if(!answer.equals("y") && !answer.equals("Y") && !answer.equals("n") && !answer.equals("N"))
+            throw new MyException("You must to choose between yes and or regard of updateing a contact");
+
+        else
+            if(answer.equals("y") || answer.equals("Y"))
+                return "y";
+            else
+                if(answer.equals("n") || answer.equals("N"))
+                    return "n";
+                else
+                    return null;
+    }
+
+    private String chooseFieldForUpdate(){
+        try {
+            System.out.println("Choice what you want to change between 1-first name, 2-last name and 3-phone number");
+            Scanner scanner = new Scanner(System.in);
+            int fieldUpdate = scanner.nextInt();
+            if (fieldUpdate < 1 || fieldUpdate > 3) return chooseFieldForUpdate();
+            else
+
+                if (fieldUpdate==1){
+                //change the first name
+
+                }
+                else
+
+                    if(fieldUpdate==2)
+                    {
+                        //change the last name
+
+                    }
+                    else
+                        if(fieldUpdate==3){
+                            //change the phone number
+
+                        }
+
+        }catch(InputMismatchException exception){
+            System.out.println("You didn't choice a valid option. Try again.");
+            return chooseFieldForUpdate();
+        }
+        return null;
+    }
+
     public void actionsAgenda() throws SQLException, IOException, ClassNotFoundException {
         createContact();
         getContacts();
         searchContact();
+        updateContact();
     }
 }
