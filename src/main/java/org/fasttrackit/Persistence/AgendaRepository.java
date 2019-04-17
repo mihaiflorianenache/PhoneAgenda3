@@ -45,6 +45,20 @@ public class AgendaRepository {
         }
     }
 
+    public String getContact(String personForUpdateContact)throws SQLException, IOException, ClassNotFoundException {
+        try(Connection connection=DatabaseConfiguration.getConnection()) {
+            String getContact = "SELECT `phoneNumber` FROM agenda WHERE firstName="+"'"+personForUpdateContact.split(" ")[0]+"'"+"AND lastName="+"'"+personForUpdateContact.split(" ")[1]+"'";
+            Statement statement = connection.createStatement();
+            statement.execute(getContact);
+
+            ResultSet resultSet = statement.executeQuery(getContact);
+            while(resultSet.next()) {
+                return resultSet.getString("phoneNumber");
+            }
+        }
+        return null;
+    }
+
     public Stack<FirstNameFromDatabase> searchFirstName()throws SQLException, IOException, ClassNotFoundException{
         try (Connection connection = DatabaseConfiguration.getConnection()) {
 
@@ -103,9 +117,11 @@ public class AgendaRepository {
         }
     }
 
-    public void updateContact(String field) throws SQLException, IOException, ClassNotFoundException{
+    public void updateContact(String field,String person) throws SQLException, IOException, ClassNotFoundException{
         try(Connection connection=DatabaseConfiguration.getConnection()){
-            if(field.equals("phoneNumber")) String updateContact="UPDATE agenda SET phoneNumber="+field+"WHERE ";
+            String updateContact="UPDATE agenda SET phoneNumber="+"'"+field+"'"+"WHERE firstName="+"'"+person.split(" ")[0]+"'"+"AND lastName="+"'"+person.split(" ")[1]+"'";
+            Statement statement=connection.createStatement();
+            statement.execute(updateContact);
         }
     }
 }

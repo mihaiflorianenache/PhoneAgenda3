@@ -23,6 +23,10 @@ public class AgendaService {
        return agendaRepository.getContact();
     }
 
+    public String getContact(String personForUpdateNumber)throws SQLException, IOException, ClassNotFoundException {
+        return agendaRepository.getContact(personForUpdateNumber);
+    }
+
     public Stack<FirstNameFromDatabase> getFirstName()throws SQLException, IOException, ClassNotFoundException{
         return agendaRepository.searchFirstName();
     }
@@ -35,7 +39,7 @@ public class AgendaService {
         return agendaRepository.searchContact(firstNameOrLastName,searchAfterFirstNameOrLastName);
     }
 
-    public void updateContact(String field)throws SQLException, IOException, ClassNotFoundException{
-        agendaRepository.updateContact(field);
+    public void updateContact(String field,String person)throws SQLException, IOException, ClassNotFoundException{
+        agendaRepository.updateContact(field,person);
     }
 }
