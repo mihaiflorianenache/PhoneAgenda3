@@ -234,45 +234,17 @@ public class Contact {
             return null;
     }
 
-    private String chooseFieldForUpdate() throws SQLException, IOException, ClassNotFoundException {
-        try {
-            System.out.println("Choice what you want to change between 1-first name, 2-last name and 3-phone number");
-            Scanner scanner = new Scanner(System.in);
-            int fieldUpdate = scanner.nextInt();
-            if (fieldUpdate < 1 || fieldUpdate > 3) return chooseFieldForUpdate();
-            else if (fieldUpdate == 1) {
-                //change the first name
-
-            } else if (fieldUpdate == 2) {
-                //change the last name
-                selectFirstNameLastNameForUpdate();
-                getNumberPhone();
-                for (int i = 0; i < pairFirstName.size(); i++) {
-                    personsFromAgend.push(pairFirstName.get(i).concat(" ").concat(pairLastName.get(i)).concat(" - ").concat(numberPhoneForUpdateingFirstNameLastName.get(i)));
-                }
-
-                String personForUpdateLastName = choicePersonForUpdateLastName();
-                newLastName = writeNewLastName(personForUpdateLastName);
-                agendaService.updateLastName(newLastName);
-
-            } else if (fieldUpdate == 3) {
-                //change the phone number
-                selectFirstNameLastNameForUpdate();
-                for (int i = 0; i < pairFirstName.size(); i++) {
-                    personsFromAgend.push(pairFirstName.get(i).concat(" ").concat(pairLastName.get(i)));
-                }
-                String personForUpdateNumber = choicePersonForUpdateNumber();
-                phoneNumber = writeNewNumberPhone(personForUpdateNumber);
-                //phoneNumber must to be different from others numbers from list
-                checkIfNumberExistInAgend(phoneNumber);
-                agendaService.updatePhoneNumber(phoneNumber, personForUpdateNumber);
-            }
-
-        } catch (InputMismatchException exception) {
-            System.out.println("You didn't choice a valid option. Try again.");
-            return chooseFieldForUpdate();
+    private void chooseFieldForUpdate() throws SQLException, IOException, ClassNotFoundException {
+        //change the phone number
+        selectFirstNameLastNameForUpdate();
+        for (int i = 0; i < pairFirstName.size(); i++) {
+            personsFromAgend.push(pairFirstName.get(i).concat(" ").concat(pairLastName.get(i)));
         }
-        return null;
+        String personForUpdateNumber = choicePersonForUpdateNumber();
+        phoneNumber = writeNewNumberPhone(personForUpdateNumber);
+        //phoneNumber must to be different from others numbers from list
+        checkIfNumberExistInAgend(phoneNumber);
+        agendaService.updatePhoneNumber(phoneNumber, personForUpdateNumber);
     }
 
     private String checkIfNumberExistInAgend(String phoneNumber) throws SQLException, IOException, ClassNotFoundException {
