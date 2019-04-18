@@ -26,7 +26,7 @@ public class Contact {
     private Vector<String> pairFirstName = new Vector<>();
     private Vector<String> pairLastName = new Vector<>();
     private Stack<String> personsFromAgend = new Stack<>();
-    private Vector<String> numberPhoneForUpdateingFirstNameLastName=new Vector<>();
+    private Vector<String> numberPhoneForUpdateingFirstNameLastName = new Vector<>();
 
     private void checkFirstNameOrLastName(String firstNameOrLastName, String fieldName) throws MyException {
 
@@ -246,14 +246,14 @@ public class Contact {
             } else if (fieldUpdate == 2) {
                 //change the last name
                 selectFirstNameLastNameForUpdate();
+                getNumberPhone();
                 for (int i = 0; i < pairFirstName.size(); i++) {
-                    personsFromAgend.push(pairFirstName.get(i).concat(" ").concat(pairLastName.get(i)));
+                    personsFromAgend.push(pairFirstName.get(i).concat(" ").concat(pairLastName.get(i)).concat(" - ").concat(numberPhoneForUpdateingFirstNameLastName.get(i)));
                 }
 
-
-
-                String personForUpdateLastName=choicePersonForUpdateLastName();
-                newLastName=writeNewLastName(personForUpdateLastName);
+                String personForUpdateLastName = choicePersonForUpdateLastName();
+                newLastName = writeNewLastName(personForUpdateLastName);
+                agendaService.updateLastName(newLastName);
 
             } else if (fieldUpdate == 3) {
                 //change the phone number
@@ -265,7 +265,7 @@ public class Contact {
                 phoneNumber = writeNewNumberPhone(personForUpdateNumber);
                 //phoneNumber must to be different from others numbers from list
                 checkIfNumberExistInAgend(phoneNumber);
-                agendaService.updateContact(phoneNumber, personForUpdateNumber);
+                agendaService.updatePhoneNumber(phoneNumber, personForUpdateNumber);
             }
 
         } catch (InputMismatchException exception) {
@@ -275,9 +275,9 @@ public class Contact {
         return null;
     }
 
-    private String checkIfNumberExistInAgend(String phoneNumber)throws SQLException, IOException, ClassNotFoundException{
-        for(Agenda agenda:agendaService.getContact()){
-            if(phoneNumber.trim().equals(agenda.getPhoneNumber())){
+    private String checkIfNumberExistInAgend(String phoneNumber) throws SQLException, IOException, ClassNotFoundException {
+        for (Agenda agenda : agendaService.getContact()) {
+            if (phoneNumber.trim().equals(agenda.getPhoneNumber())) {
                 System.out.println("This number belongs at other contact. Choose other number.");
                 return chooseFieldForUpdate();
             }
@@ -291,7 +291,7 @@ public class Contact {
             int i = 1;
             for (String updateNumber : personsFromAgend) {
                 if (i != personsFromAgend.size()) System.out.print(i + "-" + updateNumber + ", ");
-                else System.out.print(i + "-" + updateNumber+"\n");
+                else System.out.print(i + "-" + updateNumber + "\n");
                 i++;
             }
 
@@ -306,13 +306,13 @@ public class Contact {
         }
     }
 
-    private String choicePersonForUpdateLastName(){
+    private String choicePersonForUpdateLastName() {
         try {
             System.out.println("Choice one from follow persons for updateing last name");
             int i = 1;
-            for (String updateNumber : personsFromAgend) {
-                if (i != personsFromAgend.size()) System.out.print(i + "-" + updateNumber + ", ");
-                else System.out.print(i + "-" + updateNumber + "\n");
+            for (String updateLastName : personsFromAgend) {
+                if (i != personsFromAgend.size()) System.out.print(i + "-" + updateLastName + ", ");
+                else System.out.print(i + "-" + updateLastName + "\n");
                 i++;
             }
 
@@ -321,7 +321,7 @@ public class Contact {
             if (choicePerson < 1 || choicePerson > personsFromAgend.size()) return choicePersonForUpdateLastName();
             else
                 return personsFromAgend.get(choicePerson - 1);
-        }catch (InputMismatchException exception) {
+        } catch (InputMismatchException exception) {
             System.out.println("You didn't choice a valid option. Try again.");
             return choicePersonForUpdateLastName();
         }
@@ -329,29 +329,29 @@ public class Contact {
 
     private String writeNewNumberPhone(String personForUpdateNumber) throws SQLException, IOException, ClassNotFoundException {
         System.out.println("Write new phone number");
-        String oldNumber=agendaService.getContact(personForUpdateNumber);
-        Scanner scanner=new Scanner(System.in);
-        String newNumber=scanner.nextLine();
+        String oldNumber = agendaService.getContact(personForUpdateNumber);
+        Scanner scanner = new Scanner(System.in);
+        String newNumber = scanner.nextLine();
         try {
             checkPhoneNumber(newNumber);
-        }catch(MyException exception){
+        } catch (MyException exception) {
             System.out.println(exception);
             return writeNewNumberPhone(personForUpdateNumber);
         }
-        if(oldNumber.trim().equals(newNumber.trim())){
+        if (oldNumber.trim().equals(newNumber.trim())) {
             System.out.println("You must put other number.");
             return writeNewNumberPhone(personForUpdateNumber);
         }
         return newNumber;
     }
 
-    private String writeNewLastName(String personForUpdateLastName){
-        System.out.println("Who is new last name for "+personForUpdateLastName+" ?");
-        Scanner scanner=new Scanner(System.in);
-        String newLastName=scanner.nextLine();
+    private String writeNewLastName(String personForUpdateLastName) {
+        System.out.println("Who is new last name for " + personForUpdateLastName + " ?");
+        Scanner scanner = new Scanner(System.in);
+        String newLastName = scanner.nextLine();
         try {
-            checkFirstNameOrLastName("last name", lastName);
-        }catch(MyException exception){
+            checkFirstNameOrLastName("last name", newLastName);
+        } catch (MyException exception) {
             System.out.println(exception);
             return writeNewLastName(personForUpdateLastName);
         }
@@ -368,8 +368,8 @@ public class Contact {
         }
     }
 
-    private void getNumberPhone()throws SQLException, IOException, ClassNotFoundException{
-        for(Agenda listPhoneNumber:agendaService.getContact()){
+    private void getNumberPhone() throws SQLException, IOException, ClassNotFoundException {
+        for (Agenda listPhoneNumber : agendaService.getContact()) {
             numberPhoneForUpdateingFirstNameLastName.addElement(listPhoneNumber.getPhoneNumber());
         }
     }

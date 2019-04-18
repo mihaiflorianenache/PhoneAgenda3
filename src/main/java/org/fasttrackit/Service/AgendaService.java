@@ -39,7 +39,11 @@ public class AgendaService {
         return agendaRepository.searchContact(firstNameOrLastName,searchAfterFirstNameOrLastName);
     }
 
-    public void updateContact(String field,String person)throws SQLException, IOException, ClassNotFoundException{
-        agendaRepository.updateContact(field,person);
+    public void updatePhoneNumber(String field,String person)throws SQLException, IOException, ClassNotFoundException{
+        agendaRepository.updatePhoneNumber(field,person);
+    }
+
+    public void updateLastName(String field)throws SQLException, IOException, ClassNotFoundException{
+        agendaRepository.updateLastName(field);
     }
 }

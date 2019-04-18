@@ -117,11 +117,17 @@ public class AgendaRepository {
         }
     }
 
-    public void updateContact(String field,String person) throws SQLException, IOException, ClassNotFoundException{
+    public void updatePhoneNumber(String field,String person) throws SQLException, IOException, ClassNotFoundException{
         try(Connection connection=DatabaseConfiguration.getConnection()){
-            String updateContact="UPDATE agenda SET phoneNumber="+"'"+field+"'"+"WHERE firstName="+"'"+person.split(" ")[0]+"'"+"AND lastName="+"'"+person.split(" ")[1]+"'";
+            String updatePhoneNumber="UPDATE agenda SET phoneNumber="+"'"+field+"'"+"WHERE firstName="+"'"+person.split(" ")[0]+"'"+"AND lastName="+"'"+person.split(" ")[1]+"'";
             Statement statement=connection.createStatement();
-            statement.execute(updateContact);
+            statement.execute(updatePhoneNumber);
+        }
+    }
+
+    public void updateLastName(String field)throws SQLException, IOException, ClassNotFoundException{
+        try(Connection connection=DatabaseConfiguration.getConnection()){
+            String updateLastName="UPDATE agenda SET lastName="+"'"+field+"'"+"WHERE phoneNumber=";
         }
     }
 }
