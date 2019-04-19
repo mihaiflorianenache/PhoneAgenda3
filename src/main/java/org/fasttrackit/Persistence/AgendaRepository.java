@@ -125,9 +125,11 @@ public class AgendaRepository {
         }
     }
 
-    public void updateLastName(String field)throws SQLException, IOException, ClassNotFoundException{
+    public void deleteContact(String contactDelete)throws SQLException, IOException, ClassNotFoundException{
         try(Connection connection=DatabaseConfiguration.getConnection()){
-            String updateLastName="UPDATE agenda SET lastName="+"'"+field+"'"+"WHERE phoneNumber=";
+            String deleteContact="DELETE FROM agenda WHERE firstName="+"'"+contactDelete.split(" ")[0]+"'AND lastName="+"'"+contactDelete.split(" ")[1]+"'";
+            Statement statement=connection.createStatement();
+            statement.execute(deleteContact);
         }
     }
 }

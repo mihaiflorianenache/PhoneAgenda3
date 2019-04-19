@@ -43,7 +43,7 @@ public class AgendaService {
         agendaRepository.updatePhoneNumber(field,person);
     }
 
-    public void updateLastName(String field)throws SQLException, IOException, ClassNotFoundException{
-        agendaRepository.updateLastName(field);
+    public void deleteContact(String contactDelete)throws SQLException, IOException, ClassNotFoundException{
+        agendaRepository.deleteContact(contactDelete);
     }
 }
