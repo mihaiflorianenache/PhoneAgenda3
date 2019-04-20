@@ -39,6 +39,10 @@ public class AgendaService {
         return agendaRepository.searchContact(firstNameOrLastName,searchAfterFirstNameOrLastName);
     }
 
+    public List<Agenda> listPhoneNumber()throws SQLException, IOException, ClassNotFoundException{
+        return agendaRepository.getContact();
+    }
+
     public void updatePhoneNumber(String field,String person)throws SQLException, IOException, ClassNotFoundException{
         agendaRepository.updatePhoneNumber(field,person);
     }

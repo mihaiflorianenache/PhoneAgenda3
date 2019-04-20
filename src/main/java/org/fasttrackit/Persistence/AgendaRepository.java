@@ -127,7 +127,7 @@ public class AgendaRepository {
 
     public void deleteContact(String contactDelete)throws SQLException, IOException, ClassNotFoundException{
         try(Connection connection=DatabaseConfiguration.getConnection()){
-            String deleteContact="DELETE FROM agenda WHERE firstName="+"'"+contactDelete.split(" ")[0]+"'AND lastName="+"'"+contactDelete.split(" ")[1]+"'";
+            String deleteContact="DELETE FROM agenda WHERE firstName="+"'"+contactDelete.split("-")[0].split(" ")[0]+"'AND lastName="+"'"+contactDelete.split("-")[0].split(" ")[1]+"'AND phoneNumber="+"'"+contactDelete.split("-")[1]+"'";
             Statement statement=connection.createStatement();
             statement.execute(deleteContact);
         }
