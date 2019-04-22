@@ -385,6 +385,8 @@ public class Contact {
 
     private String deleteManyPersons()throws SQLException, IOException, ClassNotFoundException{
         int i = 1;
+        int numberContactsForDeleting=0;
+
         System.out.println("Select contacts who you want to delete");
         for (Agenda agenda : agendaService.getContact()) {
             contactDeleting.add(agenda.getFirstName() + " " + agenda.getLastName()+"-"+agenda.getPhoneNumber());
@@ -397,11 +399,25 @@ public class Contact {
             i++;
         }
 
-        BufferedReader deletePerson = new BufferedReader(new InputStreamReader(System.in));
-        int choiceDeleteContact = Integer.parseInt(deletePerson.readLine());
-        deleteManyContacts.add(choiceDeleteContact);
-        if(deleteManyContacts.size()<2)
-            deleteManyPersons();
+        try {
+            BufferedReader deletePerson = new BufferedReader(new InputStreamReader(System.in));
+            int choiceDeleteContact = Integer.parseInt(deletePerson.readLine());
+            if(choiceDeleteContact<1 || choiceDeleteContact>contactDeleting.size()){
+                contactDeleting.clear();
+                return deleteManyPersons();
+            }
+            else
+                deleteManyContacts.add(choiceDeleteContact);
+                if(deleteManyContacts.size()==1) {
+                    contactDeleting.clear();
+                    return deleteManyPersons();
+                }
+
+        }catch(NumberFormatException exception){
+            System.out.println("You didn't choice a valid option. Try again.");
+            contactDeleting.clear();
+            return deleteManyPersons();
+        }
         return null;
     }
 
