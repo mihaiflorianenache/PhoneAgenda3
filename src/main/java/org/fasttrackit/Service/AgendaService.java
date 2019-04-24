@@ -23,6 +23,10 @@ public class AgendaService {
        return agendaRepository.getContact();
     }
 
+    public int getNumberContacts() throws SQLException, IOException, ClassNotFoundException{
+        return agendaRepository.getNumberContacts();
+    }
+
     public String getContact(String personForUpdateNumber)throws SQLException, IOException, ClassNotFoundException {
         return agendaRepository.getContact(personForUpdateNumber);
     }

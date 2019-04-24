@@ -92,7 +92,7 @@ public class Contact {
             checkPhoneNumber(phoneNumber);
             for(Agenda agenda:agendaService.listPhoneNumber()) {
                 if(phoneNumber.trim().equals(agenda.getPhoneNumber().trim())){
-                    System.out.println("A contact with this number exists yet. Put other number.");
+                    System.out.println("A contact with this number is existing now. Put other number.");
                     return settingPhoneNumber();
                 }
             }
@@ -129,49 +129,66 @@ public class Contact {
     }
 
     private void getContacts() throws SQLException, IOException, ClassNotFoundException {
-        System.out.println("The agend contains follow contacts:");
-        for (Agenda phoneList : agendaService.getContact()) {
-            System.out.println("Id: " + phoneList.getId() + ",First name: " + phoneList.getFirstName() + ",Last name: " + phoneList.getLastName() + ",Phone number: " + phoneList.getPhoneNumber());
+        if(agendaService.getNumberContacts()!=0) {
+            System.out.println("The agend is containing follow contacts:");
+            for (Agenda phoneList : agendaService.getContact()) {
+                System.out.println("Id: " + phoneList.getId() + ",First name: " + phoneList.getFirstName() + ",Last name: " + phoneList.getLastName() + ",Phone number: " + phoneList.getPhoneNumber());
+            }
         }
+        else
+            System.out.println("You are not having any contact in agend");
     }
 
     private String searchContact() throws SQLException, IOException, ClassNotFoundException {
-        System.out.println("Select the choice after you want to search a contact: 1-first name, 2-last name");
-        Scanner scanner = new Scanner(System.in);
-        try {
-            int wayChoiceContact = scanner.nextInt();
-            if (wayChoiceContact < 1 || wayChoiceContact > 2) return searchContact();
-            else if (wayChoiceContact == 1) {
-                //search after first name
-                System.out.println("Choose a contact after one of the follow first names");
-                for (FirstNameFromDatabase firstNameFromDatabase : agendaService.getFirstName()) {
-                    System.out.println(firstNameFromDatabase.getFirstName());
-                    searchAfterName.add(firstNameFromDatabase.getFirstName());
-                }
-                firstNameAfterYouChoose = chooseContactAfterFirstName();
-                System.out.println("The contacts are");
-                searchPhisicallyContact(firstNameAfterYouChoose, agendaService, firstName);
+        if (agendaService.getNumberContacts() != 0){
+            System.out.println("Select the choice after you are wanting to search a contact: 1-first name, 2-last name");
+            Scanner scanner = new Scanner(System.in);
+            try {
+                int wayChoiceContact = scanner.nextInt();
+                if (wayChoiceContact < 1 || wayChoiceContact > 2) return searchContact();
+                else if (wayChoiceContact == 1) {
+                    //search after first name
+                    if(agendaService.getNumberContacts()>1) {
+                        System.out.println("Choose a contact after one of the follow first names");
+                        for (FirstNameFromDatabase firstNameFromDatabase : agendaService.getFirstName()) {
+                            System.out.println(firstNameFromDatabase.getFirstName());
+                            searchAfterName.add(firstNameFromDatabase.getFirstName());
+                        }
+                        if(searchAfterName.size()>1)
+                        firstNameAfterYouChoose = chooseContactAfterFirstName();
+                        System.out.println("The contacts are");
+                        searchPhisicallyContact(firstNameAfterYouChoose, agendaService, firstName);
+                    }
+                    //if agend contains only a contact
+                    else{
+                        System.out.println("The contacts are");
+                        System.out.println("Id: "+ agendaService.getContact().get(0).getId()+" ,First name: "+agendaService.getContact().get(0).getFirstName()+" ,Last name: "+agendaService.getContact().get(0).getLastName()+ ",Phone number: " + agendaService.getContact().get(0).getPhoneNumber());
+                    }
 
-            } else if (wayChoiceContact == 2) {
-                //search after last name
-                System.out.println("Choose a contact after one of the follow last names");
-                for (LastNameFromDatabase lastNameFromDatabase : agendaService.getLastName()) {
-                    System.out.println(lastNameFromDatabase.getLastName());
-                    searchAfterName.add(lastNameFromDatabase.getLastName());
+                } else if (wayChoiceContact == 2) {
+                    //search after last name
+                    System.out.println("Choose a contact after one of the follow last names");
+                    for (LastNameFromDatabase lastNameFromDatabase : agendaService.getLastName()) {
+                        System.out.println(lastNameFromDatabase.getLastName());
+                        searchAfterName.add(lastNameFromDatabase.getLastName());
+                    }
+                    lastNameAfterYouChoose = chooseContactAfterLastName();
+                    System.out.println("The contacts are");
+                    searchPhisicallyContact(lastNameAfterYouChoose, agendaService, lastName);
                 }
-                lastNameAfterYouChoose = chooseContactAfterLastName();
-                System.out.println("The contacts are");
-                searchPhisicallyContact(lastNameAfterYouChoose, agendaService, lastName);
+            } catch (InputMismatchException exception) {
+                System.out.println("You didn't select a available choice. Try again.");
+                return searchContact();
             }
-        } catch (InputMismatchException exception) {
-            System.out.println("You didn't select a available choice. Try again.");
-            return searchContact();
+        }
+        else{
+            System.out.println("You are not having a contact in your agend.");
         }
         return null;
     }
 
     private String chooseContactAfterFirstName() {
-        System.out.println("Choose a contact after one of the follow first names");
+        System.out.println("Choose contacts after one of the follow first names");
         try {
             int i;
             for (i = 0; i < searchAfterName.size(); i++) {
@@ -192,7 +209,7 @@ public class Contact {
     private String chooseContactAfterLastName() {
         int i;
         try {
-            System.out.println("Choose a contact after one of the follow last names");
+            System.out.println("Choose contacts after one of the follow last names");
             for (i = 0; i < searchAfterName.size(); i++) {
                 if (i != searchAfterName.size() - 1) System.out.print((i + 1) + "-" + searchAfterName.get(i) + ", ");
                 else System.out.print((i + 1) + "-" + searchAfterName.get(i) + "\n");
@@ -525,10 +542,11 @@ public class Contact {
     }
 
     public void actionsAgenda() throws SQLException, IOException, ClassNotFoundException {
-        createContact();
-        getContacts();
+        /*createContact();//check
+        getContacts();//check*/
         searchContact();
-        updateContact();
-        deleteContact();
+
+        /*updateContact();
+        deleteContact();*/
     }
 }

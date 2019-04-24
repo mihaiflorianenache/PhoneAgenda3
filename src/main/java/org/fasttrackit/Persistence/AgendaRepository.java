@@ -45,6 +45,21 @@ public class AgendaRepository {
         }
     }
 
+    public int getNumberContacts() throws SQLException, IOException, ClassNotFoundException{
+        int i=0;
+        try(Connection connection=DatabaseConfiguration.getConnection()){
+            String numberContact="SELECT id FROM agenda";
+            Statement statement=connection.createStatement();
+            statement.execute(numberContact);
+
+            ResultSet resultSet=statement.executeQuery(numberContact);
+            while(resultSet.next()){
+                i++;
+            }
+        }
+        return i;
+    }
+
     public String getContact(String personForUpdateContact)throws SQLException, IOException, ClassNotFoundException {
         try(Connection connection=DatabaseConfiguration.getConnection()) {
             String getContact = "SELECT `phoneNumber` FROM agenda WHERE firstName="+"'"+personForUpdateContact.split(" ")[0]+"'"+"AND lastName="+"'"+personForUpdateContact.split(" ")[1]+"'";
