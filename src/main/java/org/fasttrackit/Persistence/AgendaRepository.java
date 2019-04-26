@@ -62,7 +62,7 @@ public class AgendaRepository {
 
     public String getContact(String personForUpdateContact)throws SQLException, IOException, ClassNotFoundException {
         try(Connection connection=DatabaseConfiguration.getConnection()) {
-            String getContact = "SELECT `phoneNumber` FROM agenda WHERE firstName="+"'"+personForUpdateContact.split(" ")[0]+"'"+"AND lastName="+"'"+personForUpdateContact.split(" ")[1]+"'";
+            String getContact = "SELECT `phoneNumber` FROM agenda WHERE firstName="+"'"+personForUpdateContact.split(" ")[0]+"'"+"AND lastName="+"'"+personForUpdateContact.split(" ")[1].split("-")[0]+"'"+"AND phoneNumber="+"'"+personForUpdateContact.split(" ")[1].split("-")[1]+"'";
             Statement statement = connection.createStatement();
             statement.execute(getContact);
 

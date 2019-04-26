@@ -22,6 +22,7 @@ public class Contact {
     private String newLastName;
     private Vector<String> pairFirstName = new Vector<>();
     private Vector<String> pairLastName = new Vector<>();
+    private Vector<String> numberPhone=new Vector<>();
     private Stack<String> personsFromAgend = new Stack<>();
     private Vector<String> numberPhoneForUpdateingFirstNameLastName = new Vector<>();
     private List<String> contactDeleting = new ArrayList<>();
@@ -149,15 +150,34 @@ public class Contact {
                 else if (wayChoiceContact == 1) {
                     //search after first name
                     if(agendaService.getNumberContacts()>1) {
-                        System.out.println("Choose a contact after one of the follow first names");
                         for (FirstNameFromDatabase firstNameFromDatabase : agendaService.getFirstName()) {
                             System.out.println(firstNameFromDatabase.getFirstName());
                             searchAfterName.add(firstNameFromDatabase.getFirstName());
                         }
-                        if(searchAfterName.size()>1)
-                        firstNameAfterYouChoose = chooseContactAfterFirstName();
-                        System.out.println("The contacts are");
-                        searchPhisicallyContact(firstNameAfterYouChoose, agendaService, firstName);
+
+                        //if we have more than one first name for all contacts
+                        if(searchAfterName.size()>1) {
+                            firstNameAfterYouChoose = chooseContactAfterFirstName();
+                            System.out.println("The contacts are");
+                            searchPhisicallyContact(firstNameAfterYouChoose, agendaService, firstName);
+                        }
+
+                        //if we have only a first name for all contacts
+                        else{
+                            System.out.println("The contacts are");
+                            int i=0;
+                            List<Agenda> sameValueFirstName=new ArrayList<>();
+
+                            //put all contacts in list
+                            for(Agenda agenda:agendaService.getContact()){
+                                sameValueFirstName.add(agenda);
+                            }
+
+                            //display all contacts from list
+                            for(i=0;i<sameValueFirstName.size();i++){
+                                System.out.println("Id: "+sameValueFirstName.get(i).getId()+" ,First Name: "+sameValueFirstName.get(i).getFirstName()+" ,Last Name: "+sameValueFirstName.get(i).getLastName()+" ,Phone Number: "+sameValueFirstName.get(i).getPhoneNumber());
+                            }
+                        }
                     }
                     //if agend contains only a contact
                     else{
@@ -167,14 +187,41 @@ public class Contact {
 
                 } else if (wayChoiceContact == 2) {
                     //search after last name
-                    System.out.println("Choose a contact after one of the follow last names");
-                    for (LastNameFromDatabase lastNameFromDatabase : agendaService.getLastName()) {
-                        System.out.println(lastNameFromDatabase.getLastName());
-                        searchAfterName.add(lastNameFromDatabase.getLastName());
+                    if(agendaService.getNumberContacts()>1){
+                        for (LastNameFromDatabase lastNameFromDatabase : agendaService.getLastName()) {
+                            System.out.println(lastNameFromDatabase.getLastName());
+                            searchAfterName.add(lastNameFromDatabase.getLastName());
+                        }
+
+                        //if we have more than one first name for all contacts
+                        if(searchAfterName.size()>1) {
+                            lastNameAfterYouChoose = chooseContactAfterLastName();
+                            System.out.println("The contacts are");
+                            searchPhisicallyContact(lastNameAfterYouChoose, agendaService, lastName);
+                        }
+
+                        //if we have only a first name for all contacts
+                        else{
+                            System.out.println("The contacts are");
+                            int i=0;
+                            List<Agenda> sameValueLastName=new ArrayList<>();
+
+                            //put all contacts in list
+                            for(Agenda agenda:agendaService.getContact()){
+                                sameValueLastName.add(agenda);
+                            }
+
+                            //display all contacts from list
+                            for(i=0;i<sameValueLastName.size();i++){
+                                System.out.println("Id: "+sameValueLastName.get(i).getId()+" ,First Name: "+sameValueLastName.get(i).getFirstName()+" ,Last Name: "+sameValueLastName.get(i).getLastName()+" ,Phone Number: "+sameValueLastName.get(i).getPhoneNumber());
+                            }
+                        }
                     }
-                    lastNameAfterYouChoose = chooseContactAfterLastName();
-                    System.out.println("The contacts are");
-                    searchPhisicallyContact(lastNameAfterYouChoose, agendaService, lastName);
+
+                    else{
+                        System.out.println("The contacts are");
+                        System.out.println("Id: "+ agendaService.getContact().get(0).getId()+" ,First name: "+agendaService.getContact().get(0).getFirstName()+" ,Last name: "+agendaService.getContact().get(0).getLastName()+ ",Phone number: " + agendaService.getContact().get(0).getPhoneNumber());
+                    }
                 }
             } catch (InputMismatchException exception) {
                 System.out.println("You didn't select a available choice. Try again.");
@@ -232,10 +279,15 @@ public class Contact {
     }
 
     private String updateContact() throws SQLException, IOException, ClassNotFoundException {
+        int numberContacts=agendaService.getNumberContacts();
         try {
-            String option = optionUpdateContact();
-            if (option.trim().equals("y"))
-                chooseFieldForUpdate();
+            if(numberContacts!=0) {
+                String option = optionUpdateContact();
+                if (option.trim().equals("y"))
+                    chooseFieldForUpdate();
+            }
+            else
+                System.out.println("You don't have any contact in your agend");
         } catch (MyException exception) {
             System.out.println(exception);
             return updateContact();
@@ -262,7 +314,7 @@ public class Contact {
         //change the phone number
         selectFirstNameLastNameForUpdate();
         for (int i = 0; i < pairFirstName.size(); i++) {
-            personsFromAgend.push(pairFirstName.get(i).concat(" ").concat(pairLastName.get(i)));
+            personsFromAgend.push(pairFirstName.get(i).concat(" ").concat(pairLastName.get(i)).concat("-").concat(numberPhone.get(i)));
         }
         String personForUpdateNumber = choicePersonForUpdateNumber();
         phoneNumber = writeNewNumberPhone(personForUpdateNumber);
@@ -357,6 +409,10 @@ public class Contact {
     }
 
     private void selectFirstNameLastNameForUpdate() throws SQLException, IOException, ClassNotFoundException {
+        for(Agenda agenda:agendaService.getContact()){
+            numberPhone.addElement(agenda.getPhoneNumber());
+        }
+
         for (Agenda phoneListForFirstName : agendaService.getContact()) {
             pairFirstName.addElement(phoneListForFirstName.getFirstName());
         }
@@ -543,10 +599,10 @@ public class Contact {
 
     public void actionsAgenda() throws SQLException, IOException, ClassNotFoundException {
         /*createContact();//check
-        getContacts();//check*/
-        searchContact();
+        getContacts();//check
+        searchContact();//check*/
 
-        /*updateContact();
-        deleteContact();*/
+        updateContact();
+        //deleteContact();*/
     }
 }
