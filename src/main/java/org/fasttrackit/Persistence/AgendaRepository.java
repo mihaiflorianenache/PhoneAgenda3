@@ -134,7 +134,7 @@ public class AgendaRepository {
 
     public void updatePhoneNumber(String field,String person) throws SQLException, IOException, ClassNotFoundException{
         try(Connection connection=DatabaseConfiguration.getConnection()){
-            String updatePhoneNumber="UPDATE agenda SET phoneNumber="+"'"+field+"'"+"WHERE firstName="+"'"+person.split(" ")[0]+"'"+"AND lastName="+"'"+person.split(" ")[1]+"'";
+            String updatePhoneNumber="UPDATE agenda SET phoneNumber="+"'"+field+"'"+"WHERE firstName="+"'"+person.split(" ")[0]+"'"+"AND lastName="+"'"+person.split(" ")[1].split("-")[0]+"'";
             Statement statement=connection.createStatement();
             statement.execute(updatePhoneNumber);
         }
