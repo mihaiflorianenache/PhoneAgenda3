@@ -463,7 +463,7 @@ public class Contact {
             numberContactInAgend++;
         }
 
-        //if table contains only a contact
+            //if table contains only a contact
             if(numberContactInAgend==1){
                 deleteOnePerson();
             }
@@ -477,9 +477,9 @@ public class Contact {
                         int choiceNumberContacts = Integer.parseInt(numberContact.readLine());
                         if (choiceNumberContacts < 1 || choiceNumberContacts > 2) return eraseContact();
                         else if (choiceNumberContacts == 1)
-                            deletePerson();
+                            deleteManyPersons(choiceNumberContacts);
                         else if (choiceNumberContacts == 2)
-                            deleteManyPersons();
+                            deleteManyPersons(choiceNumberContacts);
                     } catch (NumberFormatException exception) {
                         return eraseContact();
                     }
@@ -487,10 +487,8 @@ public class Contact {
                 return null;
     }
 
-    private String deleteManyPersons()throws SQLException, IOException, ClassNotFoundException{
+    private String deleteManyPersons(int choiceNumberContacts) throws SQLException, IOException, ClassNotFoundException{
         int i = 1;
-        int numberContactsForDeleting=0;
-
         System.out.println("Select contacts who you want to delete");
         for (Agenda agenda : agendaService.getContact()) {
             contactDeleting.add(agenda.getFirstName() + " " + agenda.getLastName()+"-"+agenda.getPhoneNumber());
@@ -502,6 +500,34 @@ public class Contact {
             else System.out.print(i + "-" + contactDeleting.get(i - 1) + "\n");
             i++;
         }
+
+        try{
+            BufferedReader deletePerson = new BufferedReader(new InputStreamReader(System.in));
+            int choiceDeleteContact = Integer.parseInt(deletePerson.readLine());
+            if(choiceDeleteContact<1 || choiceDeleteContact>contactDeleting.size()){
+                contactDeleting.clear();
+                return deleteManyPersons(choiceNumberContacts);
+            }
+            else
+                //if we have many contacts and we want ot delete only a contact
+                if(choiceNumberContacts==1){
+                    agendaService.deleteContact(contactDeleting.get(choiceDeleteContact-1));
+                }
+
+                //if we have many contacts and we want to delete many contacts
+                if (choiceNumberContacts==2){
+
+                }
+
+        }catch(NumberFormatException exception){
+            System.out.println("You didn't choice a valid option. Try again.");
+            contactDeleting.clear();
+            return deleteManyPersons(choiceNumberContacts);
+        }
+        return null;
+    }
+
+    /*private String deleteManyPersons()throws SQLException, IOException, ClassNotFoundException{
 
         try {
             BufferedReader deletePerson = new BufferedReader(new InputStreamReader(System.in));
@@ -556,7 +582,7 @@ public class Contact {
             agendaService.deleteContact(contactForDelete.get(j));
         }
         return null;
-    }
+    }*/
 
     private String doYouWantToDeleteOtherContact() throws IOException{
         System.out.println("Do you want to delete other contact beside contacts which you choose for delete so far? Y/N");
@@ -605,7 +631,7 @@ public class Contact {
     private void deleteOnePerson()throws SQLException, IOException, ClassNotFoundException{
         System.out.println("The following contact will be deleted");
         System.out.println("Id: "+agendaService.getContact().get(0).getId()+" ,First Name: "+agendaService.getContact().get(0).getFirstName()+" ,Last Name: "+agendaService.getContact().get(0).getLastName()+" ,Phone Number: "+agendaService.getContact().get(0).getPhoneNumber());
-        agendaService.deleteContact();
+        agendaService.deleteContact(agendaService.getContact().get(0).getFirstName()+" "+agendaService.getContact().get(0).getLastName()+"-"+agendaService.getContact().get(0).getPhoneNumber());
     }
 
     private void deletePhisicallyContact(String contactDelete) throws SQLException, IOException, ClassNotFoundException {
