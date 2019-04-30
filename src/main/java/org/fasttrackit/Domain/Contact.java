@@ -589,10 +589,10 @@ public class Contact {
     }
 
     public void actionsAgenda() throws SQLException, IOException, ClassNotFoundException {
-        /* createContact();//check
-        getContacts();//check
-        searchContact();//check
-        updateContact();//check*/
+        createContact();
+        getContacts();
+        searchContact();
+        updateContact();
         deleteContact();
     }
 }
