@@ -22,12 +22,12 @@ public class Contact {
     private String newLastName;
     private Vector<String> pairFirstName = new Vector<>();
     private Vector<String> pairLastName = new Vector<>();
-    private Vector<String> numberPhone=new Vector<>();
+    private Vector<String> numberPhone = new Vector<>();
     private Stack<String> personsFromAgend = new Stack<>();
     private Vector<String> numberPhoneForUpdateingFirstNameLastName = new Vector<>();
     private List<String> contactDeleting = new ArrayList<>();
-    private List<Integer> deleteManyContacts=new ArrayList<>();
-    private Stack<String> contactForDelete=new Stack<>();
+    private List<Integer> deleteManyContacts = new ArrayList<>();
+    private Stack<String> contactForDelete = new Stack<>();
 
     private void checkFirstNameOrLastName(String firstNameOrLastName, String fieldName) throws MyException {
 
@@ -85,14 +85,14 @@ public class Contact {
         }
     }
 
-    private String settingPhoneNumber()throws SQLException, IOException, ClassNotFoundException {
+    private String settingPhoneNumber() throws SQLException, IOException, ClassNotFoundException {
         System.out.println("Write your phone number");
         Scanner scanner = new Scanner(System.in);
         String phoneNumber = scanner.nextLine();
         try {
             checkPhoneNumber(phoneNumber);
-            for(Agenda agenda:agendaService.listPhoneNumber()) {
-                if(phoneNumber.trim().equals(agenda.getPhoneNumber().trim())){
+            for (Agenda agenda : agendaService.listPhoneNumber()) {
+                if (phoneNumber.trim().equals(agenda.getPhoneNumber().trim())) {
                     System.out.println("A contact with this number is existing now. Put other number.");
                     return settingPhoneNumber();
                 }
@@ -130,18 +130,17 @@ public class Contact {
     }
 
     private void getContacts() throws SQLException, IOException, ClassNotFoundException {
-        if(agendaService.getNumberContacts()!=0) {
+        if (agendaService.getNumberContacts() != 0) {
             System.out.println("The agend is containing follow contacts:");
             for (Agenda phoneList : agendaService.getContact()) {
                 System.out.println("Id: " + phoneList.getId() + ",First name: " + phoneList.getFirstName() + ",Last name: " + phoneList.getLastName() + ",Phone number: " + phoneList.getPhoneNumber());
             }
-        }
-        else
+        } else
             System.out.println("You are not having any contact in agend");
     }
 
     private String searchContact() throws SQLException, IOException, ClassNotFoundException {
-        if (agendaService.getNumberContacts() != 0){
+        if (agendaService.getNumberContacts() != 0) {
             System.out.println("Select the choice after you are wanting to search a contact: 1-first name, 2-last name");
             Scanner scanner = new Scanner(System.in);
             try {
@@ -149,86 +148,83 @@ public class Contact {
                 if (wayChoiceContact < 1 || wayChoiceContact > 2) return searchContact();
                 else if (wayChoiceContact == 1) {
                     //search after first name
-                    if(agendaService.getNumberContacts()>1) {
+                    if (agendaService.getNumberContacts() > 1) {
                         for (FirstNameFromDatabase firstNameFromDatabase : agendaService.getFirstName()) {
                             System.out.println(firstNameFromDatabase.getFirstName());
                             searchAfterName.add(firstNameFromDatabase.getFirstName());
                         }
 
                         //if we have more than one first name for all contacts
-                        if(searchAfterName.size()>1) {
+                        if (searchAfterName.size() > 1) {
                             firstNameAfterYouChoose = chooseContactAfterFirstName();
                             System.out.println("The contacts are");
                             searchPhisicallyContact(firstNameAfterYouChoose, agendaService, firstName);
                         }
 
                         //if we have only a first name for all contacts
-                        else{
+                        else {
                             System.out.println("The contacts are");
-                            int i=0;
-                            List<Agenda> sameValueFirstName=new ArrayList<>();
+                            int i = 0;
+                            List<Agenda> sameValueFirstName = new ArrayList<>();
 
                             //put all contacts in list
-                            for(Agenda agenda:agendaService.getContact()){
+                            for (Agenda agenda : agendaService.getContact()) {
                                 sameValueFirstName.add(agenda);
                             }
 
                             //display all contacts from list
-                            for(i=0;i<sameValueFirstName.size();i++){
-                                System.out.println("Id: "+sameValueFirstName.get(i).getId()+" ,First Name: "+sameValueFirstName.get(i).getFirstName()+" ,Last Name: "+sameValueFirstName.get(i).getLastName()+" ,Phone Number: "+sameValueFirstName.get(i).getPhoneNumber());
+                            for (i = 0; i < sameValueFirstName.size(); i++) {
+                                System.out.println("Id: " + sameValueFirstName.get(i).getId() + " ,First Name: " + sameValueFirstName.get(i).getFirstName() + " ,Last Name: " + sameValueFirstName.get(i).getLastName() + " ,Phone Number: " + sameValueFirstName.get(i).getPhoneNumber());
                             }
                         }
                     }
                     //if agend contains only a contact
-                    else{
+                    else {
                         System.out.println("The contacts are");
-                        System.out.println("Id: "+ agendaService.getContact().get(0).getId()+" ,First name: "+agendaService.getContact().get(0).getFirstName()+" ,Last name: "+agendaService.getContact().get(0).getLastName()+ ",Phone number: " + agendaService.getContact().get(0).getPhoneNumber());
+                        System.out.println("Id: " + agendaService.getContact().get(0).getId() + " ,First name: " + agendaService.getContact().get(0).getFirstName() + " ,Last name: " + agendaService.getContact().get(0).getLastName() + ",Phone number: " + agendaService.getContact().get(0).getPhoneNumber());
                     }
 
                 } else if (wayChoiceContact == 2) {
                     //search after last name
-                    if(agendaService.getNumberContacts()>1){
+                    if (agendaService.getNumberContacts() > 1) {
                         for (LastNameFromDatabase lastNameFromDatabase : agendaService.getLastName()) {
                             System.out.println(lastNameFromDatabase.getLastName());
                             searchAfterName.add(lastNameFromDatabase.getLastName());
                         }
 
                         //if we have more than one first name for all contacts
-                        if(searchAfterName.size()>1) {
+                        if (searchAfterName.size() > 1) {
                             lastNameAfterYouChoose = chooseContactAfterLastName();
                             System.out.println("The contacts are");
                             searchPhisicallyContact(lastNameAfterYouChoose, agendaService, lastName);
                         }
 
                         //if we have only a first name for all contacts
-                        else{
+                        else {
                             System.out.println("The contacts are");
-                            int i=0;
-                            List<Agenda> sameValueLastName=new ArrayList<>();
+                            int i = 0;
+                            List<Agenda> sameValueLastName = new ArrayList<>();
 
                             //put all contacts in list
-                            for(Agenda agenda:agendaService.getContact()){
+                            for (Agenda agenda : agendaService.getContact()) {
                                 sameValueLastName.add(agenda);
                             }
 
                             //display all contacts from list
-                            for(i=0;i<sameValueLastName.size();i++){
-                                System.out.println("Id: "+sameValueLastName.get(i).getId()+" ,First Name: "+sameValueLastName.get(i).getFirstName()+" ,Last Name: "+sameValueLastName.get(i).getLastName()+" ,Phone Number: "+sameValueLastName.get(i).getPhoneNumber());
+                            for (i = 0; i < sameValueLastName.size(); i++) {
+                                System.out.println("Id: " + sameValueLastName.get(i).getId() + " ,First Name: " + sameValueLastName.get(i).getFirstName() + " ,Last Name: " + sameValueLastName.get(i).getLastName() + " ,Phone Number: " + sameValueLastName.get(i).getPhoneNumber());
                             }
                         }
-                    }
-
-                    else{
+                    } else {
                         System.out.println("The contacts are");
-                        System.out.println("Id: "+ agendaService.getContact().get(0).getId()+" ,First name: "+agendaService.getContact().get(0).getFirstName()+" ,Last name: "+agendaService.getContact().get(0).getLastName()+ ",Phone number: " + agendaService.getContact().get(0).getPhoneNumber());
+                        System.out.println("Id: " + agendaService.getContact().get(0).getId() + " ,First name: " + agendaService.getContact().get(0).getFirstName() + " ,Last name: " + agendaService.getContact().get(0).getLastName() + ",Phone number: " + agendaService.getContact().get(0).getPhoneNumber());
                     }
                 }
             } catch (InputMismatchException exception) {
                 System.out.println("You didn't select a available choice. Try again.");
                 return searchContact();
             }
-        }
-        else{
+        } else {
             System.out.println("You are not having a contact in your agend.");
         }
         return null;
@@ -279,14 +275,13 @@ public class Contact {
     }
 
     private String updateContact() throws SQLException, IOException, ClassNotFoundException {
-        int numberContacts=agendaService.getNumberContacts();
+        int numberContacts = agendaService.getNumberContacts();
         try {
-            if(numberContacts!=0) {
+            if (numberContacts != 0) {
                 String option = optionUpdateContact();
                 if (option.trim().equals("y"))
                     chooseFieldForUpdate();
-            }
-            else
+            } else
                 System.out.println("You don't have any contact in your agend");
         } catch (MyException exception) {
             System.out.println(exception);
@@ -317,13 +312,11 @@ public class Contact {
             personsFromAgend.push(pairFirstName.get(i).concat(" ").concat(pairLastName.get(i)).concat("-").concat(numberPhone.get(i)));
         }
 
-        if(personsFromAgend.size()==1){
-            System.out.println("Change number at "+personsFromAgend.get(0));
+        if (personsFromAgend.size() == 1) {
+            System.out.println("Change number at " + personsFromAgend.get(0));
             phoneNumber = writeNewNumberPhone(personsFromAgend.get(0));
             agendaService.updatePhoneNumber(phoneNumber, personsFromAgend.get(0));
-        }
-
-        else {
+        } else {
             String personForUpdateNumber = choicePersonForUpdateNumber();
             phoneNumber = writeNewNumberPhone(personForUpdateNumber);
             //phoneNumber must to be different from others numbers from list
@@ -418,7 +411,7 @@ public class Contact {
     }
 
     private void selectFirstNameLastNameForUpdate() throws SQLException, IOException, ClassNotFoundException {
-        for(Agenda agenda:agendaService.getContact()){
+        for (Agenda agenda : agendaService.getContact()) {
             numberPhone.addElement(agenda.getPhoneNumber());
         }
 
@@ -448,50 +441,47 @@ public class Contact {
             } else if (choiceDeleteContact.equals("Y") || choiceDeleteContact.equals("y")) {
                 eraseContact();
             }
-        }
-        else
+        } else
             System.out.println("You are not having a contact in agend.");
         return null;
     }
 
 
-    private String eraseContact() throws SQLException,IOException, ClassNotFoundException {
+    private String eraseContact() throws SQLException, IOException, ClassNotFoundException {
 
-        int numberContactInAgend=0;
-        for(Agenda agenda:agendaService.getContact())
-        {
+        int numberContactInAgend = 0;
+        for (Agenda agenda : agendaService.getContact()) {
             numberContactInAgend++;
         }
 
-            //if table contains only a contact
-            if(numberContactInAgend==1){
-                deleteOnePerson();
-            }
+        //if table contains only a contact
+        if (numberContactInAgend == 1) {
+            deleteOnePerson();
+        }
 
-            //if table contains many contacts
-            else
-                if(numberContactInAgend>1){
-                    System.out.println("Do you want to delete 1-one contact or 2-many contacts ?");
-                    try {
-                        BufferedReader numberContact = new BufferedReader(new InputStreamReader(System.in));
-                        int choiceNumberContacts = Integer.parseInt(numberContact.readLine());
-                        if (choiceNumberContacts < 1 || choiceNumberContacts > 2) return eraseContact();
-                        else if (choiceNumberContacts == 1)
-                            deleteManyPersons(choiceNumberContacts);
-                        else if (choiceNumberContacts == 2)
-                            deleteManyPersons(choiceNumberContacts);
-                    } catch (NumberFormatException exception) {
-                        return eraseContact();
-                    }
-                }
-                return null;
+        //if table contains many contacts
+        else if (numberContactInAgend > 1) {
+            System.out.println("Do you want to delete 1-one contact or 2-many contacts ?");
+            try {
+                BufferedReader numberContact = new BufferedReader(new InputStreamReader(System.in));
+                int choiceNumberContacts = Integer.parseInt(numberContact.readLine());
+                if (choiceNumberContacts < 1 || choiceNumberContacts > 2) return eraseContact();
+                else if (choiceNumberContacts == 1)
+                    deleteManyPersons(choiceNumberContacts);
+                else if (choiceNumberContacts == 2)
+                    deleteManyPersons(choiceNumberContacts);
+            } catch (NumberFormatException exception) {
+                return eraseContact();
+            }
+        }
+        return null;
     }
 
-    private String deleteManyPersons(int choiceNumberContacts) throws SQLException, IOException, ClassNotFoundException{
+    private String deleteManyPersons(int choiceNumberContacts) throws SQLException, IOException, ClassNotFoundException {
         int i = 1;
         System.out.println("Select contacts who you want to delete");
         for (Agenda agenda : agendaService.getContact()) {
-            contactDeleting.add(agenda.getFirstName() + " " + agenda.getLastName()+"-"+agenda.getPhoneNumber());
+            contactDeleting.add(agenda.getFirstName() + " " + agenda.getLastName() + "-" + agenda.getPhoneNumber());
         }
 
         for (String browseContactDeleting : contactDeleting) {
@@ -501,25 +491,44 @@ public class Contact {
             i++;
         }
 
-        try{
+        try {
             BufferedReader deletePerson = new BufferedReader(new InputStreamReader(System.in));
             int choiceDeleteContact = Integer.parseInt(deletePerson.readLine());
-            if(choiceDeleteContact<1 || choiceDeleteContact>contactDeleting.size()){
+            if (choiceDeleteContact < 1 || choiceDeleteContact > contactDeleting.size()) {
                 contactDeleting.clear();
                 return deleteManyPersons(choiceNumberContacts);
+            } else
+                //if we have many contacts and we want to delete only a contact
+                if (choiceNumberContacts == 1) {
+                    agendaService.deleteContact(contactDeleting.get(choiceDeleteContact - 1));
+                }
+
+            //if we have many contacts and we want to delete many contacts
+            if (choiceNumberContacts == 2) {
+                if (!deleteManyContacts.contains(choiceDeleteContact))
+                    deleteManyContacts.add(choiceDeleteContact);
+
+
+                if (deleteManyContacts.size() == 1) {
+                    System.out.println("You must to select a new contact for delete");
+                    contactDeleting.clear();
+                    return deleteManyPersons(choiceNumberContacts);
+                }
+
+                if (deleteManyContacts.size() >= 2 && deleteManyContacts.size() < contactDeleting.size()) {
+                    String deleteOtherContact = doYouWantToDeleteOtherContact();
+                    if (deleteOtherContact.trim().equals("y")) {
+                        contactDeleting.clear();
+                        return deleteManyPersons(choiceNumberContacts);
+                    }
+                }
             }
-            else
-                //if we have many contacts and we want ot delete only a contact
-                if(choiceNumberContacts==1){
-                    agendaService.deleteContact(contactDeleting.get(choiceDeleteContact-1));
-                }
 
-                //if we have many contacts and we want to delete many contacts
-                if (choiceNumberContacts==2){
+            for (int contact : deleteManyContacts) {
+                agendaService.deleteContact(contactDeleting.get(contact - 1));
+            }
 
-                }
-
-        }catch(NumberFormatException exception){
+        } catch (NumberFormatException exception) {
             System.out.println("You didn't choice a valid option. Try again.");
             contactDeleting.clear();
             return deleteManyPersons(choiceNumberContacts);
@@ -527,82 +536,23 @@ public class Contact {
         return null;
     }
 
-    /*private String deleteManyPersons()throws SQLException, IOException, ClassNotFoundException{
-
-        try {
-            BufferedReader deletePerson = new BufferedReader(new InputStreamReader(System.in));
-            int choiceDeleteContact = Integer.parseInt(deletePerson.readLine());
-            if(choiceDeleteContact<1 || choiceDeleteContact>contactDeleting.size()){
-                contactDeleting.clear();
-                return deleteManyPersons();
-            }
-            else {
-                //check if selected contact has been selected before
-                for (i = 0; i < deleteManyContacts.size(); i++) {
-                    if (deleteManyContacts.get(i) == choiceDeleteContact) {
-                        System.out.println("You have selected this contact for delete.");
-                        contactDeleting.clear();
-                        return deleteManyPersons();
-                    }
-                }
-
-                //if selected contact has not been selected before this contact is adding to deleteManyContacts list
-                deleteManyContacts.add(choiceDeleteContact);
-                contactForDelete.push(contactDeleting.get(choiceDeleteContact-1));
-
-                //if deleteManyContacts list contains only a contact the user will must to choice a new contact
-                if (deleteManyContacts.size() == 1) {
-                    contactDeleting.clear();
-                    return deleteManyPersons();
-                }
-                else {
-                    //if user selected a number of contact for delete who is equal with all number contact that is all
-                    if(deleteManyContacts.size()==contactDeleting.size())
-                        System.out.println("You have choose all contacts for delete");
-
-                    //if user selected more than 1 contact for delete but maybe he will want to delete other contact beside these
-                    else {
-                        String choiceDeleteOtherContact = doYouWantToDeleteOtherContact();
-                        if (choiceDeleteOtherContact.equals("y")) {
-                            contactDeleting.clear();
-                            return deleteManyPersons();
-                        }
-                    }
-                }
-            }
-
-        }catch(NumberFormatException exception){
-            System.out.println("You didn't choice a valid option. Try again.");
-            contactDeleting.clear();
-            return deleteManyPersons();
-        }
-
-        int j;
-        for(j=0;j<contactForDelete.size();j++) {
-            agendaService.deleteContact(contactForDelete.get(j));
-        }
-        return null;
-    }*/
-
-    private String doYouWantToDeleteOtherContact() throws IOException{
+    private String doYouWantToDeleteOtherContact() throws IOException {
         System.out.println("Do you want to delete other contact beside contacts which you choose for delete so far? Y/N");
-        BufferedReader answerDeleteOtherContact=new BufferedReader(new InputStreamReader(System.in));
-        String answer=answerDeleteOtherContact.readLine();
-        if(!answer.equals("Y") && !answer.equals("y") && !answer.equals("N") && !answer.equals("n")) {
+        BufferedReader answerDeleteOtherContact = new BufferedReader(new InputStreamReader(System.in));
+        String answer = answerDeleteOtherContact.readLine();
+        if (!answer.equals("Y") && !answer.equals("y") && !answer.equals("N") && !answer.equals("n")) {
             System.out.println("You didn't write a valid answer. Try again.");
             return doYouWantToDeleteOtherContact();
-        }
-        else
-            if(answer.equals("Y") || answer.equals("y"))
-                return "y";
-            else return "n";
+        } else if (answer.equals("Y") || answer.equals("y"))
+            return "y";
+        else return "n";
     }
 
     private String deletePerson() throws SQLException, IOException, ClassNotFoundException {
         int i = 1;
         System.out.println("Select a contact who you want to delete");
         for (Agenda agenda : agendaService.getContact()) {
-            contactDeleting.add(agenda.getFirstName() + " " + agenda.getLastName()+"-"+agenda.getPhoneNumber());
+            contactDeleting.add(agenda.getFirstName() + " " + agenda.getLastName() + "-" + agenda.getPhoneNumber());
         }
 
         for (String browseContactDeleting : contactDeleting) {
@@ -628,10 +578,10 @@ public class Contact {
         return null;
     }
 
-    private void deleteOnePerson()throws SQLException, IOException, ClassNotFoundException{
+    private void deleteOnePerson() throws SQLException, IOException, ClassNotFoundException {
         System.out.println("The following contact will be deleted");
-        System.out.println("Id: "+agendaService.getContact().get(0).getId()+" ,First Name: "+agendaService.getContact().get(0).getFirstName()+" ,Last Name: "+agendaService.getContact().get(0).getLastName()+" ,Phone Number: "+agendaService.getContact().get(0).getPhoneNumber());
-        agendaService.deleteContact(agendaService.getContact().get(0).getFirstName()+" "+agendaService.getContact().get(0).getLastName()+"-"+agendaService.getContact().get(0).getPhoneNumber());
+        System.out.println("Id: " + agendaService.getContact().get(0).getId() + " ,First Name: " + agendaService.getContact().get(0).getFirstName() + " ,Last Name: " + agendaService.getContact().get(0).getLastName() + " ,Phone Number: " + agendaService.getContact().get(0).getPhoneNumber());
+        agendaService.deleteContact(agendaService.getContact().get(0).getFirstName() + " " + agendaService.getContact().get(0).getLastName() + "-" + agendaService.getContact().get(0).getPhoneNumber());
     }
 
     private void deletePhisicallyContact(String contactDelete) throws SQLException, IOException, ClassNotFoundException {
@@ -639,11 +589,10 @@ public class Contact {
     }
 
     public void actionsAgenda() throws SQLException, IOException, ClassNotFoundException {
-        /*createContact();//check
+        /* createContact();//check
         getContacts();//check
         searchContact();//check
         updateContact();//check*/
-
         deleteContact();
     }
 }
