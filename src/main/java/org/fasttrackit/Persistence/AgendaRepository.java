@@ -12,7 +12,7 @@ import java.util.Stack;
 
 public class AgendaRepository {
 
-    public void createContact(Agenda agenda)throws SQLException, IOException, ClassNotFoundException {
+    public void createContact(Agenda agenda)throws SQLException {
         try (Connection connection = DatabaseConfiguration.getConnection()) {
             String insertContact="INSERT INTO agenda (`firstName`,`lastName`,`phoneNumber`) VALUES (?,?,?)"+"ON DUPLICATE KEY UPDATE firstName=firstName+1;";
 
@@ -24,7 +24,7 @@ public class AgendaRepository {
         }
     }
 
-    public List<Agenda> getContact()throws SQLException, IOException, ClassNotFoundException {
+    public List<Agenda> getContact()throws SQLException {
         try(Connection connection=DatabaseConfiguration.getConnection()) {
             String getContact = "SELECT id,`firstName`,`lastName`,`phoneNumber` FROM agenda ORDER BY firstName desc";
             Statement statement = connection.createStatement();
@@ -45,7 +45,7 @@ public class AgendaRepository {
         }
     }
 
-    public int getNumberContacts() throws SQLException, IOException, ClassNotFoundException{
+    public int getNumberContacts() throws SQLException{
         int i=0;
         try(Connection connection=DatabaseConfiguration.getConnection()){
             String numberContact="SELECT id FROM agenda";
@@ -60,7 +60,7 @@ public class AgendaRepository {
         return i;
     }
 
-    public String getContact(String personForUpdateContact)throws SQLException, IOException, ClassNotFoundException {
+    public String getContact(String personForUpdateContact)throws SQLException {
         try(Connection connection=DatabaseConfiguration.getConnection()) {
             String getContact = "SELECT `phoneNumber` FROM agenda WHERE firstName="+"'"+personForUpdateContact.split(" ")[0]+"'"+"AND lastName="+"'"+personForUpdateContact.split(" ")[1].split("-")[0]+"'"+"AND phoneNumber="+"'"+personForUpdateContact.split(" ")[1].split("-")[1]+"'";
             Statement statement = connection.createStatement();
@@ -74,7 +74,7 @@ public class AgendaRepository {
         return null;
     }
 
-    public Stack<FirstNameFromDatabase> searchFirstName()throws SQLException, IOException, ClassNotFoundException{
+    public Stack<FirstNameFromDatabase> searchFirstName()throws SQLException{
         try (Connection connection = DatabaseConfiguration.getConnection()) {
 
             String getFirstName = "SELECT DISTINCT firstName FROM agenda;";
@@ -93,7 +93,7 @@ public class AgendaRepository {
         }
     }
 
-    public Stack<LastNameFromDatabase> searchLastName()throws SQLException, IOException, ClassNotFoundException{
+    public Stack<LastNameFromDatabase> searchLastName()throws SQLException{
         try (Connection connection = DatabaseConfiguration.getConnection()) {
 
             String getLastName = "SELECT DISTINCT lastName FROM agenda;";
@@ -112,7 +112,7 @@ public class AgendaRepository {
         }
     }
 
-    public List<Agenda> searchContact(String optionSearch, String firstNameOrLastName) throws SQLException, IOException, ClassNotFoundException {
+    public List<Agenda> searchContact(String optionSearch, String firstNameOrLastName) throws SQLException{
         try (Connection connection = DatabaseConfiguration.getConnection()) {
             String query = "SELECT id,`firstName`,`lastName`,`phoneNumber` FROM agenda WHERE " + optionSearch + "=" + "'" + firstNameOrLastName + "'";
             Statement statement = connection.createStatement();
@@ -132,7 +132,7 @@ public class AgendaRepository {
         }
     }
 
-    public void updatePhoneNumber(String field,String person) throws SQLException, IOException, ClassNotFoundException{
+    public void updatePhoneNumber(String field,String person) throws SQLException{
         try(Connection connection=DatabaseConfiguration.getConnection()){
             String updatePhoneNumber="UPDATE agenda SET phoneNumber="+"'"+field+"'"+"WHERE firstName="+"'"+person.split(" ")[0]+"'"+"AND lastName="+"'"+person.split(" ")[1].split("-")[0]+"'";
             Statement statement=connection.createStatement();
@@ -140,7 +140,7 @@ public class AgendaRepository {
         }
     }
 
-    public void deleteContact(String contactDelete)throws SQLException, IOException, ClassNotFoundException{
+    public void deleteContact(String contactDelete)throws SQLException{
         try(Connection connection=DatabaseConfiguration.getConnection()){
             String deleteContact="DELETE FROM agenda WHERE firstName="+"'"+contactDelete.split("-")[0].split(" ")[0]+"'AND lastName="+"'"+contactDelete.split("-")[0].split(" ")[1]+"'AND phoneNumber="+"'"+contactDelete.split("-")[1]+"'";
             Statement statement=connection.createStatement();

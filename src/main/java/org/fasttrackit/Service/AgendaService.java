@@ -14,44 +14,44 @@ public class AgendaService {
 
     private AgendaRepository agendaRepository=new AgendaRepository();
 
-    public void createContact(Agenda agenda) throws SQLException, IOException, ClassNotFoundException{
+    public void createContact(Agenda agenda) throws SQLException{
         System.out.println("Creating item: "+agenda);
         agendaRepository.createContact(agenda);
     }
 
-    public List<Agenda> getContact()throws SQLException, IOException, ClassNotFoundException {
+    public List<Agenda> getContact()throws SQLException{
        return agendaRepository.getContact();
     }
 
-    public int getNumberContacts() throws SQLException, IOException, ClassNotFoundException{
+    public int getNumberContacts() throws SQLException{
         return agendaRepository.getNumberContacts();
     }
 
-    public String getContact(String personForUpdateNumber)throws SQLException, IOException, ClassNotFoundException {
+    public String getContact(String personForUpdateNumber)throws SQLException {
         return agendaRepository.getContact(personForUpdateNumber);
     }
 
-    public Stack<FirstNameFromDatabase> getFirstName()throws SQLException, IOException, ClassNotFoundException{
+    public Stack<FirstNameFromDatabase> getFirstName()throws SQLException{
         return agendaRepository.searchFirstName();
     }
 
-    public Stack<LastNameFromDatabase> getLastName()throws SQLException, IOException, ClassNotFoundException{
+    public Stack<LastNameFromDatabase> getLastName()throws SQLException{
         return agendaRepository.searchLastName();
     }
 
-    public List<Agenda> searchContactAfterFirstNameOrLastName(String firstNameOrLastName,String searchAfterFirstNameOrLastName) throws SQLException, IOException, ClassNotFoundException{
+    public List<Agenda> searchContactAfterFirstNameOrLastName(String firstNameOrLastName,String searchAfterFirstNameOrLastName) throws SQLException{
         return agendaRepository.searchContact(firstNameOrLastName,searchAfterFirstNameOrLastName);
     }
 
-    public List<Agenda> listPhoneNumber()throws SQLException, IOException, ClassNotFoundException{
+    public List<Agenda> listPhoneNumber()throws SQLException{
         return agendaRepository.getContact();
     }
 
-    public void updatePhoneNumber(String field,String person)throws SQLException, IOException, ClassNotFoundException{
+    public void updatePhoneNumber(String field,String person)throws SQLException{
         agendaRepository.updatePhoneNumber(field,person);
     }
 
-    public void deleteContact(String contactDelete)throws SQLException, IOException, ClassNotFoundException{
+    public void deleteContact(String contactDelete)throws SQLException{
         agendaRepository.deleteContact(contactDelete);
     }
 }
