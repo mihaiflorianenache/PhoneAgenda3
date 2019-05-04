@@ -1,7 +1,7 @@
 package org.fasttrackit.Transfer;
 
 public class SaveAgendaRequest {
-
+    //este nevoie de o clasa care sa contina lista abonatilor din agenda
     private String firstName;
     private String lastName;
     private String phoneNumber;

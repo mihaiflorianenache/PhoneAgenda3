@@ -23,7 +23,7 @@ public class AgendaServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //500 response from server
+        //read (select) (fetch)
         try {
             List<Agenda> agenda = agendaService.getContact();
 
@@ -59,6 +59,7 @@ public class AgendaServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest req,HttpServletResponse resp) throws ServletException,IOException{
+        //create (insert)
         setAccessControlHeaders(resp);
         ObjectMapper objectMapper=new ObjectMapper();
         SaveAgendaRequest request=objectMapper.readValue(req.getReader(),SaveAgendaRequest.class);
@@ -72,6 +73,7 @@ public class AgendaServlet extends HttpServlet {
     }
 
     protected void doPut(HttpServletRequest req,HttpServletResponse resp)throws ServletException, IOException{
+        //update (update)
         setAccessControlHeaders(resp);
         String id=req.getParameter("id");
         ObjectMapper objectMapper=new ObjectMapper();
