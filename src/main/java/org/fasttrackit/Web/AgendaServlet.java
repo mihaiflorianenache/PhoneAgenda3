@@ -31,18 +31,20 @@ public class AgendaServlet extends HttpServlet {
             //with ObjectMapper agenda object is use regard of transform this object in a JSON (string format)
             ObjectMapper objectMapper=new ObjectMapper();
 
-            //agenda object is transforming in a string
-            String responseJSON=objectMapper.writeValueAsString(agenda);
+            int i;
+            for(i=0;i<agenda.size()+1;i++) {
+                //agenda object is transforming in a string
+                String responseJSON = objectMapper.writeValueAsString(agenda.get(i));
 
-            //we set a header, contentType (or mime type) , regard of announcing client that he will receives a response like a JSON format
-            resp.setContentType("application/json");
+                //we set a header, contentType (or mime type) , regard of announcing client that he will receives a response like a JSON format
+                resp.setContentType("application/json");
 
-            //is displaying all content from database in a string format
-            //because data structure who contains records from DB has been transformed in a string
-            resp.getWriter().print(responseJSON);
-            resp.getWriter().flush();
+                //is displaying all content from database in a string format
+                //because data structure who contains records from DB has been transformed in a string
+                resp.getWriter().print(responseJSON);
+                resp.getWriter().flush();
+            }
             resp.getWriter().close();
-
         }catch(SQLException exception){
             resp.sendError(500,"There was a error processing your request "+exception.getMessage());
         }
