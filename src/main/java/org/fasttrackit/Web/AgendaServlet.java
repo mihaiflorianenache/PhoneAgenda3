@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class AgendaServlet extends HttpServlet {
             ObjectMapper objectMapper=new ObjectMapper();
 
             int i;
-            for(i=0;i<agenda.size()+1;i++) {
+            for(i=0;i<agenda.size();i++) {
                 //agenda object is transforming in a string
                 String responseJSON = objectMapper.writeValueAsString(agenda.get(i));
 
@@ -45,6 +46,7 @@ public class AgendaServlet extends HttpServlet {
                 resp.getWriter().flush();
             }
             resp.getWriter().close();
+
         }catch(SQLException exception){
             resp.sendError(500,"There was a error processing your request "+exception.getMessage());
         }
