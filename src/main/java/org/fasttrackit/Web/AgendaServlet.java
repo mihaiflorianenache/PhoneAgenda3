@@ -16,7 +16,7 @@ import java.io.ObjectInputStream;
 import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet(urlPatterns = "/agenda")
+@WebServlet(urlPatterns = "/agenda")//end point
 public class AgendaServlet extends HttpServlet {
 
     //anytime in a servlet we have a type service object
