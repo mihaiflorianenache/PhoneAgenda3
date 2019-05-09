@@ -28,6 +28,7 @@ public class Contact {
     private List<String> contactDeleting = new ArrayList<>();
     private List<Integer> deleteManyContacts = new ArrayList<>();
     private Stack<String> contactForDelete = new Stack<>();
+    private List<Integer> spaces=new ArrayList<>();
 
     private void checkFirstNameOrLastName(String firstNameOrLastName, String fieldName) throws MyException {
 
@@ -199,7 +200,7 @@ public class Contact {
                             searchPhisicallyContact(lastNameAfterYouChoose, agendaService, lastName);
                         }
 
-                        //if we have only a first name for all contacts
+                        //if we have only a last name for all contacts
                         else {
                             System.out.println("The contacts are");
                             int i = 0;
@@ -589,10 +590,10 @@ public class Contact {
     }
 
     public void actionsAgenda() throws SQLException, IOException, ClassNotFoundException {
-        createContact();
-        /*getContacts();
-        searchContact();
+        //createContact();
+        //getContacts();*/
+        //searchContact();
         updateContact();
-        deleteContact();*/
+        deleteContact();
     }
 }
